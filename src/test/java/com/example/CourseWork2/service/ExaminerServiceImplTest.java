@@ -2,6 +2,7 @@ package com.example.CourseWork2.service;
 
 import com.example.CourseWork2.Question;
 import com.example.CourseWork2.service.impl.ExaminerServiceImpl;
+import com.example.CourseWork2.service.impl.JavaQuestionService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class ExaminerServiceImplTest {
     @Mock
-    QuestionService questionService;
+    JavaQuestionService questionService;
 
     @InjectMocks
     ExaminerServiceImpl examinerService;
@@ -37,11 +38,28 @@ public class ExaminerServiceImplTest {
                                         "существуют только во время выполнения этих методов или блоков." +
                                         " Они недоступны за пределами своего контекста выполнения.")
                 ));
+
+    }
+
+    @BeforeEach
+    void getRandomQuestion() {
+        Mockito.when(questionService.getRandomQuestion())
+                .thenReturn(new Question("Что такое конструктор в Java?",
+                                "Конструктор — это метод, который вызывается при создании нового объекта класса. " +
+                                        "Конструкторы используются для инициализации объектов. "),
+                        new Question("Что такое класс в Java?",
+                                "Класс — это образец для создания будущего объекта. " +
+                                        "Класс определяет сущность объекта: его вид, возможности, поведение."),
+                        new Question("Что такое локальные переменные?",
+                                "Локальные переменные находятся внутри методов или блоков кода и " +
+                                        "существуют только во время выполнения этих методов или блоков." +
+                                        " Они недоступны за пределами своего контекста выполнения."));
+
     }
 
     @Test
     void getQuestions() {
         Collection<Question> actual = examinerService.getQuestions(3);
-        Assertions.assertEquals(3,actual.size());
+        Assertions.assertEquals(3, actual.size());
     }
 }
